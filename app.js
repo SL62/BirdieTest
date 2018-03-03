@@ -32,7 +32,9 @@ app.get("/databases", function(req, res) {
 
 	var databases = [];
 	fs.readdirSync(databaseDir).forEach(file => {
-		databases.push(file);
+		if (file.includes(".db")) {
+			databases.push(file);
+		}
 	});
 	const databasesJSON = {"databases": databases};
 	res.json(databasesJSON);
@@ -49,13 +51,16 @@ app.get("/tables/:databaseName", function(req, res) {
 		database.all(sql, (err, allTables) => {
 			if (err) {
 				console.error(err.message);
+				res.status(500);
+				res.json({"error": err.message});
+			} else {
+				var tables = [];
+				allTables.forEach((table) => {
+					tables.push(table.name);
+				});
+				const tablesJSON = {"tables": tables};
+				res.json(tablesJSON);
 			}
-			var tables = [];
-			allTables.forEach((table) => {
-				tables.push(table.name);
-			});
-			const tablesJSON = {"tables": tables};
-			res.json(tablesJSON);
 		});
 	});
 	database.close();
@@ -72,14 +77,17 @@ app.get("/columns/:databaseName/:tableName", function(req, res) {
 		database.all(sql, (err, allColumns) => {
 			if (err) {
 				console.error(err.message);
+				res.status(500);
+				res.json({"error": err.message});
+			} else {
+				var columns = [];
+				allColumns.forEach((col) => {
+					columns.push(col.name);
+				});
+				columns.sort();
+				const columnsJSON = {"columns": columns};
+				res.json(columnsJSON);
 			}
-			var columns = [];
-			allColumns.forEach((col) => {
-				columns.push(col.name);
-			});
-			columns.sort();
-			const columnsJSON = {"columns": columns};
-			res.json(columnsJSON);
 		});
 	});
 	database.close();
@@ -102,9 +110,11 @@ app.get("/data/:databaseName/:tableName/:columnName", function(req, res) {
 		database.all(sql, (err, allData) => {
 			if (err) {
 				console.error(err.message);
+				res.status(500);
+				res.json({"error": err.message});
+			} else {
+				res.json(allData);
 			}
-			console.log(allData);
-			res.json(allData);
 		});
 	});
 	database.close();

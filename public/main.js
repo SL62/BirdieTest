@@ -27,11 +27,16 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 			$scope.valuesNotShown = "";
 			$scope.linesNotShown = "";
 		}
+		function resetAll() {
+			$scope.shouldShowSpinner = false;
+			resetDatabase();
+			resetTable();
+			resetColumn();
+			resetOverflow();
+		}
 
 		// Set defaults
-		resetDatabase();
-		resetTable();
-		resetColumn();
+		resetAll();
 
 		// GET request for all available databases
 		$http.get( "/databases")
@@ -69,6 +74,7 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					
 				}, function() {
 					console.log("ERROR FETCHING TABLES");
+					resetAll();
 				});
 		};
 
@@ -98,6 +104,7 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					
 				}, function() {
 					console.log("ERROR FETCHING COLUMNS");
+					resetAll();
 				});
 		};
 
@@ -137,7 +144,8 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					}
 					$scope.selectedColumn = column;
 				}, function() {
-					console.log("ERROR FETCHING COLUMNS");
+					console.log("ERROR FETCHING DATA");
+					resetAll();
 				});
 		};
 	}
