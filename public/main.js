@@ -6,23 +6,21 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 		// Selected values
 		var selectedDatabase = "";
 		var selectedTable = "";
-		var selectedColumn = "";
 
 		// Reset methods
 		function resetDatabase() {
 			$scope.isDatabaseSelected = false;
-			$scope.selectedDatabase = "Database"
+			$scope.selectedDatabase = "Database";
 			selectedDatabase = "";
 		}
 		function resetTable() {
 			$scope.isTableSelected = false;
-			$scope.selectedTable = "Table"
+			$scope.selectedTable = "Table";
 			selectedTable = "";
 		}
 		function resetColumn() {
 			$scope.isColumnSelected = false;
-			$scope.selectedColumn = "Variable"
-			selectedColumn = "";
+			$scope.selectedColumn = "Variable";
 		}
 		function resetOverflow() {
 			$scope.shouldShowOverflow = false;
@@ -32,7 +30,7 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 
 		// Set defaults
 		resetDatabase();
-		resetTable()
+		resetTable();
 		resetColumn();
 
 		// GET request for all available databases
@@ -62,12 +60,12 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					$scope.isDatabaseSelected = true;
 					$scope.tables = response.data.tables;
 					$scope.selectedDatabase = database;
-					selectedDatabase = database
+					selectedDatabase = database;
 
 					// Reset selected table and columns
 					resetTable();
 					resetColumn();
-					resetOverflow()
+					resetOverflow();
 					
 				}, function() {
 					console.log("ERROR FETCHING TABLES");
@@ -96,7 +94,7 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					
 					// Reset previously selected columns
 					resetColumn();
-					resetOverflow()
+					resetOverflow();
 					
 				}, function() {
 					console.log("ERROR FETCHING COLUMNS");
@@ -125,20 +123,19 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 
 					// Only show top 100 values sorted by count
 					if (numEntries > 100) {
-						for (i = 100; i < numEntries; i++) {
+						for (var i = 100; i < numEntries; i++) {
 							numLinesNotShown += response.data[i].countOf;
 						}
 						numValuesNotShown = numEntries - 100;
 						$scope.variables = response.data.slice(0,100);
 						$scope.shouldShowOverflow = true;
-						$scope.valuesNotShown = "Distinct values not shown: " + numValuesNotShown
-						$scope.linesNotShown = "Total values not shown: " + numLinesNotShown
+						$scope.valuesNotShown = "Distinct values not shown: " + numValuesNotShown;
+						$scope.linesNotShown = "Total values not shown: " + numLinesNotShown;
 					} else {
 						$scope.variables = response.data;
-						resetOverflow()
+						resetOverflow();
 					}
 					$scope.selectedColumn = column;
-					selectedColumn = column;
 				}, function() {
 					console.log("ERROR FETCHING COLUMNS");
 				});
@@ -147,5 +144,5 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 ]);
 
 function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+	return string.charAt(0).toUpperCase() + string.slice(1);
 }

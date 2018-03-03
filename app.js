@@ -41,7 +41,7 @@ app.get("/databases", function(req, res) {
 // GET ARRAY OF ALL AVAILABLE TABLES FOR SELECTED DATABASE
 app.get("/tables/:databaseName", function(req, res) {
 
-	const databasePath = databaseDir + req.databaseName
+	const databasePath = databaseDir + req.databaseName;
 	const database = new sqlite3.Database(databasePath, sqlite3.OPEN_READONLY);
 	const sql = "SELECT name FROM sqlite_master WHERE type='table'";
 
@@ -64,7 +64,7 @@ app.get("/tables/:databaseName", function(req, res) {
 // GET ARRAY OF ALL AVAILABLE COLUMNS FOR SELECTED DATABASE AND TABLE
 app.get("/columns/:databaseName/:tableName", function(req, res) {
 
-	const databasePath = databaseDir + req.databaseName
+	const databasePath = databaseDir + req.databaseName;
 	const database = new sqlite3.Database(databasePath, sqlite3.OPEN_READONLY);
 	const sql = "PRAGMA table_info(" + req.tableName + ")";
 
@@ -88,7 +88,7 @@ app.get("/columns/:databaseName/:tableName", function(req, res) {
 // GET DATA FOR SELECTED DATABASE, TABLE, AND COLUMN
 app.get("/data/:databaseName/:tableName/:columnName", function(req, res) {
 
-	const databasePath = databaseDir + req.databaseName
+	const databasePath = databaseDir + req.databaseName;
 	const database = new sqlite3.Database(databasePath, sqlite3.OPEN_READONLY);
 	const sql = "SELECT DISTINCT [" + req.columnName + "] AS name, " +
 				"COUNT([" + req.columnName + "]) AS countOf, " +
