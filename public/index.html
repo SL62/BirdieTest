@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html ng-app="mainApp" ng-controller="mainCtrl">
+	<head>
+        <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<!-- Title -->
+		<title>Birdie Test</title>
+		<!-- Bootstrap CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<!-- Local CSS -->
+		<link href="/main.css" rel="stylesheet">
+		<!-- JQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+		<!-- Angular -->
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+		<!-- Bootstrap -->
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		<!-- Local Script -->
+		<script src="/main.js"></script>
+	</head>
+	<body>
+		<!-- Navbar -->
+		<nav class="navbar navbar-default">
+			<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="/">
+                        Birdie Test
+					</a>
+				</div>
+			</div>
+        </nav>
+        <!-- Main Body -->
+		<div class="container">
+            <!-- Selection Buttons -->
+            <div class="row">
+                <div class="dropdown col-sm-4">
+                    <h5>Select Database</h5>
+                    <button class="btn btn-primary btn-block dropdown-toggle" type="button" data-toggle="dropdown">
+                        <span ng-bind="selectedDatabase"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="database in databases">
+                            <a ng-click="didSelectDatabase(database)" ng-bind="database"></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown col-sm-4">
+                    <h5>Select Table</h5>
+                    <button class="btn btn-primary btn-block dropdown-toggle" ng-class="isDatabaseSelected ? '' : 'disabled'" type="button" data-toggle="dropdown">
+                        <span ng-bind="selectedTable"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="table in tables">
+                            <a ng-click="didSelectTable(table)" ng-bind="table"></a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown col-sm-4">
+                    <h5>Select Variable</h5>
+                    <button class="btn btn-primary btn-block dropdown-toggle" ng-class="isDatabaseSelected && isTableSelected ? '' : 'disabled'" type="button" data-toggle="dropdown">
+                        <span ng-bind="selectedColumn"></span>
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li ng-repeat="column in columns">
+                            <a ng-click="didSelectColumn(column)" ng-bind="column"></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Spinner -->
+            <div ng-show="shouldShowSpinner" ng-cloak>
+                <div class="spinner"></div>
+            </div>
+            <!-- Table -->
+            <div ng-hide="shouldShowSpinner" ng-cloak>
+                <hr ng-show="isDatabaseSelected && isTableSelected && isColumnSelected" ng-cloak>
+                <table class="table table-striped" ng-show="isDatabaseSelected && isTableSelected && isColumnSelected" ng-cloak>
+                    <thead>
+                        <tr>
+                            <th class="col-xs-1">#</th>
+                            <th class="col-xs-7" ng-bind="columnName"></th>
+                            <th class="col-xs-2">Count</th>
+                            <th class="col-xs-2">Average Age</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="variable in variables">
+                            <td class="col-xs-1" ng-bind="$index + 1"></td>
+                            <td class="col-xs-7" ng-bind="variable.name"></td>
+                            <td class="col-xs-2" ng-bind="variable.countOf"></td>
+                            <td class="col-xs-2" ng-bind="variable.avAge | number: 1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <hr ng-show="isDatabaseSelected && isTableSelected && isColumnSelected" ng-cloak>
+                <div ng-show="shouldShowOverflow">
+                    <h5>Only top 100 values are shown (sorted by Count)</h5>
+                    <h5 ng-bind="valuesNotShown"></h5>
+                    <h5 ng-bind="linesNotShown"></h5>
+                </div>
+            </div>
+		</div>
+	</body>
+</html>
