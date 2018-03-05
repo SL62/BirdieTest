@@ -52,9 +52,10 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 
 			// Show loading spinner
 			$scope.shouldShowSpinner = true;
+			const params = {"selectedDatabase": database};
 
 			// GET request for all tables
-			$http.get( "/tables/" + database)
+			$http.get( "/tables", {params: params})
 				.then(function(response) {
 
 					// Hide loading spinner
@@ -74,6 +75,8 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					
 				}, function() {
 					console.log("ERROR FETCHING TABLES");
+
+					// RESET
 					resetAll();
 				});
 		};
@@ -83,9 +86,11 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 
 			// Show loading spinner
 			$scope.shouldShowSpinner = true;
+			const params = {"selectedDatabase": selectedDatabase,
+				"selectedTable": table};
 
 			// GET request for all columns
-			$http.get( "/columns/" + selectedDatabase + "/" + table)
+			$http.get( "/columns", {params: params})
 				.then(function(response) {
 
 					// Hide loading spinner
@@ -104,6 +109,8 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					
 				}, function() {
 					console.log("ERROR FETCHING COLUMNS");
+
+					// RESET
 					resetAll();
 				});
 		};
@@ -113,9 +120,12 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 
 			// Show loading spinner
 			$scope.shouldShowSpinner = true;
+			const params = {"selectedDatabase": selectedDatabase,
+				"selectedTable": selectedTable,
+				"selectedColumn": column};
 
 			// GET request for data
-			$http.get( "/data/" + selectedDatabase + "/" + selectedTable + "/" + column)
+			$http.get( "/data", {params: params})
 				.then(function(response) {
 
 					// Hide loading spinner
@@ -145,6 +155,8 @@ mainApp.controller("mainCtrl", ["$scope", "$window", "$http",
 					$scope.selectedColumn = column;
 				}, function() {
 					console.log("ERROR FETCHING DATA");
+
+					// RESET
 					resetAll();
 				});
 		};
